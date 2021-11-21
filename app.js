@@ -14,18 +14,21 @@ client.on("messageCreate", message => {
   if (message.author === client.user) return;
 
   const random = Math.floor(Math.random() * 100) + 1;
+  // alternative Math.floor(Math.random() * (110 - 10 + 1)) + 10;
 
   if (counter < random) {
     counter++;
     return;
   }
 
+  counter = 0;
+
   message.channel.send({
     "embeds": [
       {
         "type": "rich",
         "title": `Mawk Rose - Social Media`,
-        "description": `Do you want to hear more froim **Mawk Rose**? Check out his other presences!`,
+        "description": `Do you want to hear more from **Mawk Rose**? Check out his other presences!`,
         "color": 0x230633,
         "fields": [
           {
