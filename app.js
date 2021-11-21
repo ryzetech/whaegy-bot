@@ -9,14 +9,14 @@ client.once("ready", () => {
 });
 
 client.on("messageCreate", message => {
-  console.log(message.content);
+  if (message.author === client.user) return;
 
   message.channel.send({
     "embeds": [
       {
         "type": "rich",
-        "title": `Lil WHÄGY - Social Media`,
-        "description": `Do you want to hear more froim **Lil WHÄGY**? Check out his other presences!`,
+        "title": `Mark Rose - Social Media`,
+        "description": `Do you want to hear more froim **Mark Rose**? Check out his other presences!`,
         "color": 0x230633,
         "fields": [
           {
