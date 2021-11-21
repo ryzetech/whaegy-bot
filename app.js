@@ -9,9 +9,9 @@ client.once("ready", () => {
 });
 
 client.on("messageCreate", message => {
-  const channel = message.channel;
+  console.log(message.content);
 
-  channel.send({
+  message.channel.send({
     "embeds": [
       {
         "type": "rich",
