@@ -12,14 +12,12 @@ function checkInviteValidity() {
   // log the number of invites deleted
   let deleted = 0;
 
-  client.guilds.cache.forEach((guild) => {
-    guild.fetchInvites().then((invites) => {
-      invites.forEach((invite) => {
-        if (invite.uses > 0 && invite.createdTimestamp < Date.now() - 3600000) {
-          invite.delete();
-          deleted++;
-        }
-      });
+  client.guilds.fetch("750404434953109616").fetchInvites().then((invites) => {
+    invites.forEach((invite) => {
+      if (invite.uses > 0 && invite.createdTimestamp < Date.now() - 3600000) {
+        invite.delete();
+        deleted++;
+      }
     });
   });
 
