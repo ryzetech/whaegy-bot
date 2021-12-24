@@ -3,6 +3,7 @@ const { token } = require('./token.json');
 // const { prefix } = require('./config.json');
 
 let counter = 0;
+const inviteWhitelist = ["https://discord.gg/9pFgurh"];
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_INVITES] });
 
@@ -15,8 +16,10 @@ function checkInviteValidity() {
   client.guilds.fetch("750404434953109616").fetchInvites().then((invites) => {
     invites.forEach((invite) => {
       if (invite.uses > 0 && invite.createdTimestamp < Date.now() - 3600000) {
-        invite.delete();
-        deleted++;
+        if (!inviteWhitelist.includes(invite.toString())) {
+          invite.delete();
+          deleted++;
+        }
       }
     });
   });
@@ -58,6 +61,11 @@ client.on("messageCreate", message => {
         "fields": [
           {
             "name": `Exclusive Songs`,
+            "value": `[Spotify](https://open.spotify.com/artist/3nIb69gy5g6QARfRJco71b)`,
+            "inline": true,
+          },
+          {
+            "name": `All releases`,
             "value": `[SoundCloud](https://soundcloud.com/user-411463626)`,
             "inline": true,
           },
