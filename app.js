@@ -34,9 +34,9 @@ client.once("ready", () => {
   client.user.setActivity('with ryze and mawk', { type: 'PLAYING' });
   client.channels.cache.get("913155351912775731").send(`✅ I'm logged in and now watching!`);
 
-  checkInviteValidity();
+  // checkInviteValidity();
 
-  setInterval(checkInviteValidity, 3600000);
+  // setInterval(checkInviteValidity, 3600000);
 });
 
 client.on("messageCreate", message => {
