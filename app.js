@@ -1,4 +1,4 @@
-const { Client, Intents } = require('discord.js');
+const { Client, Intents, MessageEmbed } = require('discord.js');
 const { token } = require('./token.json');
 // const { prefix } = require('./config.json');
 
@@ -40,7 +40,11 @@ botcli.once("ready", () => {
     newPresence.activities.forEach((activity) => {
       console.log(activity);
       if (activity.name === "Spotify" && activity.type === "LISTENING" && activity.details === "Can You Feel My Heart") {
-        botcli.channels.cache.get("750404434953109619").send("lol");
+        const emb = new MessageEmbed()
+          .setImage("https://i.imgur.com/dTjXX9X.jpeg")
+          .setFooter('This image has been sent because Cookie is listening to "Can You Feel My Heart" on Spotify.');
+
+        botcli.channels.cache.get("750404434953109619").send({ embeds: [emb] });
       }
     });
   });
@@ -62,36 +66,30 @@ botcli.on("messageCreate", message => {
   }
 
   counter = 0;
-  message.channel.send({
-    "embeds": [
+  const emb = new MessageEmbed()
+    .setTitle("Mawk Rose - Social Media")
+    .setDescription("Do you want to hear more from **Mawk Rose**? Check out his other presences!")
+    .setColor("#230633")
+    .addFields(
       {
-        "type": "rich",
-        "title": `Mawk Rose - Social Media`,
-        "description": `Do you want to hear more from **Mawk Rose**? Check out his other presences!`,
-        "color": 0x230633,
-        "fields": [
-          {
-            "name": `Exclusive Songs`,
-            "value": `[Spotify](https://open.spotify.com/artist/3nIb69gy5g6QARfRJco71b)`,
-            "inline": true,
-          },
-          {
-            "name": `All releases`,
-            "value": `[SoundCloud](https://soundcloud.com/user-411463626)`,
-            "inline": true,
-          },
-          {
-            "name": `Visualizers`,
-            "value": `[YouTube](https://www.youtube.com/channel/UCNWst-KiCxNnpH3pdhPOINg)`,
-            "inline": true,
-          },
-        ],
-        "footer": {
-          "text": `bot by https://ryzetech.live/ | service provided for free`,
-        },
+        "name": `Exclusive Songs`,
+        "value": `[Spotify](https://open.spotify.com/artist/3nIb69gy5g6QARfRJco71b)`,
+        "inline": true,
       },
-    ],
-  });
+      {
+        "name": `All releases`,
+        "value": `[SoundCloud](https://soundcloud.com/user-411463626)`,
+        "inline": true,
+      },
+      {
+        "name": `Visualizers`,
+        "value": `[YouTube](https://www.youtube.com/channel/UCNWst-KiCxNnpH3pdhPOINg)`,
+        "inline": true,
+      },
+    )
+    .setFooter("bot by https://ryzetech.live/ | service provided for free");
+
+  message.channel.send({ "embeds": [emb] });
 });
 
 botcli.login(token);
