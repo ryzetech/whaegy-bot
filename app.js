@@ -5,7 +5,7 @@ const { token } = require('./token.json');
 let counter = 0;
 const inviteWhitelist = ["https://discord.gg/9pFgurh"];
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_INVITES] });
+const botcli = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_INVITES] });
 
 function checkInviteValidity() {
   // get all invites
@@ -13,7 +13,7 @@ function checkInviteValidity() {
   // log the number of invites deleted
   let deleted = 0;
 
-  client.guilds.fetch("750404434953109616").fetchInvites().then((invites) => {
+  botcli.guilds.fetch("750404434953109616").fetchInvites().then((invites) => {
     invites.forEach((invite) => {
       if (invite.uses > 0 && invite.createdTimestamp < Date.now() - 3600000) {
         if (!inviteWhitelist.includes(invite.toString())) {
@@ -25,22 +25,43 @@ function checkInviteValidity() {
   });
 
   if (deleted > 0) {
-    client.channels.cache.get("913155351912775731").send(`✅ Deleted ${deleted} invites in hourly clean!`);
+    botcli.channels.cache.get("913155351912775731").send(`✅ Deleted ${deleted} invites in hourly clean!`);
   }
 }
 
-client.once("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-  client.user.setActivity('with ryze and mawk', { type: 'PLAYING' });
-  client.channels.cache.get("913155351912775731").send(`✅ I'm logged in and now watching!`);
+botcli.once("ready", () => {
+  console.log(`Logged in as ${botcli.user.tag}!`);
+  botcli.user.setActivity('with ryze and mawk', { type: 'PLAYING' });
+  botcli.channels.cache.get("913155351912775731").send(`✅ I'm logged in and now watching!`);
+
+  const userKeksi = botcli.users.cache.get("250353791193448448");
+
+  userKeksi.client.on("presenceUpdate", (oldPresence, newPresence) => {
+    newPresence.activities.forEach((activity) => {
+      console.log(activity);
+      if (activity.details.includes("https://open.spotify.com/track/")) {
+        const trackId = activity.details.split("/")[4];
+        const trackName = activity.details.split("/")[5];
+        const trackArtist = activity.details.split("/")[6];
+        const trackAlbum = activity.details.split("/")[7];
+
+        if (trackName === "Can You Feel My Heart") {
+          botcli.channels.cache.get("750404434953109619").send("lol");
+        }
+        else {
+          console.log(activity.details);
+        }
+      }
+    });
+  });
 
   // checkInviteValidity();
 
   // setInterval(checkInviteValidity, 3600000);
 });
 
-client.on("messageCreate", message => {
-  if (message.author === client.user) return;
+botcli.on("messageCreate", message => {
+  if (message.author === botcli.user) return;
 
   const random = Math.floor(Math.random() * 100) + 1;
   // alternative Math.floor(Math.random() * (110 - 10 + 1)) + 10;
@@ -83,4 +104,4 @@ client.on("messageCreate", message => {
   });
 });
 
-client.login(token);
+botcli.login(token);
