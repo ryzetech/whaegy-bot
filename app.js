@@ -39,18 +39,8 @@ botcli.once("ready", () => {
   userKeksi.client.on("presenceUpdate", (oldPresence, newPresence) => {
     newPresence.activities.forEach((activity) => {
       console.log(activity);
-      if (activity.details.includes("https://open.spotify.com/track/")) {
-        const trackId = activity.details.split("/")[4];
-        const trackName = activity.details.split("/")[5];
-        const trackArtist = activity.details.split("/")[6];
-        const trackAlbum = activity.details.split("/")[7];
-
-        if (trackName === "Can You Feel My Heart") {
-          botcli.channels.cache.get("750404434953109619").send("lol");
-        }
-        else {
-          console.log(activity.details);
-        }
+      if (activity.name === "Spotify" && activity.type === "LISTENING" && activity.details === "Can You Feel My Heart") {
+        botcli.channels.cache.get("750404434953109619").send("lol");
       }
     });
   });
