@@ -38,7 +38,6 @@ botcli.once("ready", () => {
 
   userKeksi.client.on("presenceUpdate", (oldPresence, newPresence) => {
     newPresence.activities.forEach((activity) => {
-      console.log(activity);
       if (activity.name === "Spotify" && activity.type === "LISTENING" && activity.details === "Can You Feel My Heart") {
         const emb = new MessageEmbed()
           .setImage("https://i.imgur.com/dTjXX9X.jpeg")
