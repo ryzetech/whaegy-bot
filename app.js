@@ -9,8 +9,8 @@ const inviteWhitelist = ["https://discord.gg/9pFgurh"];
 const botcli = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_INVITES] });
 
 const mawkEmbed = new MessageEmbed()
-  .setTitle("Mawk Rose - Social Media")
-  .setDescription("Do you want to hear more from **Mawk Rose**? Check out his other presences!")
+  .setTitle("Mawk - Social Media")
+  .setDescription("Do you want to hear more from **Mawk**? Check out his other presences!")
   .setColor("#230633")
   .setThumbnail("https://i.ryzetech.live/mawkrose.jpg")
   .setImage("https://i.ryzetech.live/mawkrosebanner.jpg")
