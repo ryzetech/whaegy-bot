@@ -1,4 +1,4 @@
-const { Client, Intents, MessageEmbed } = require('discord.js');
+const { Client, Intents, MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const { token } = require('./token.json');
 // const { prefix } = require('./config.json');
 
@@ -13,25 +13,27 @@ const mawkEmbed = new MessageEmbed()
   .setDescription("Do you want to hear more from **Mawk Rose**? Check out his other presences!")
   .setColor("#230633")
   .setThumbnail("https://i.ryzetech.live/mawkrose.jpg")
-  .addFields(
-    {
-      "name": `Exclusive Songs`,
-      "value": `[Spotify](https://open.spotify.com/artist/3nIb69gy5g6QARfRJco71b)`,
-      "inline": true,
-    },
-    {
-      "name": `All releases`,
-      "value": `[SoundCloud](https://soundcloud.com/user-411463626)`,
-      "inline": true,
-    },
-    {
-      "name": `Visualizers`,
-      "value": `[YouTube](https://www.youtube.com/channel/UCNWst-KiCxNnpH3pdhPOINg)`,
-      "inline": true,
-    },
-  )
+  .setImage("https://i.ryzetech.live/mawkrosebanner.jpg")
   .setFooter("bot by https://ryzetech.live/ | service provided for free");
 
+const mawkEmbedButtons = new MessageActionRow()
+  .addComponents(
+    new MessageButton()
+      .setStyle("LINK")
+      .setLabel("Spotify")
+      .setEmoji("929031160451977236")
+      .setURL("https://open.spotify.com/artist/3nIb69gy5g6QARfRJco71b"),
+    new MessageButton()
+      .setStyle("LINK")
+      .setLabel("SoundCloud")
+      .setEmoji("929031467714117652")
+      .setURL("https://soundcloud.com/user-411463626"),
+    new MessageButton()
+      .setStyle("LINK")
+      .setLabel("YouTube")
+      .setEmoji("929031649067425853")
+      .setURL("https://www.youtube.com/channel/UCNWst-KiCxNnpH3pdhPOINg"),
+  );
 
 function checkInviteValidity() {
   // get all invites
@@ -92,7 +94,7 @@ botcli.on("messageCreate", message => {
   if (message.author === botcli.user) return;
   if (message.content.startsWith("+mawk")) {
     counter = 0;
-    message.channel.send({ "embeds": [mawkEmbed] });
+    message.channel.send({ embeds: [mawkEmbed], components: [mawkEmbedButtons] });
   }
   else {
     const random = Math.floor(Math.random() * 100) + 1;
@@ -105,7 +107,7 @@ botcli.on("messageCreate", message => {
 
     counter = 0;
 
-    message.channel.send({ "embeds": [mawkEmbed] });
+    message.channel.send({ "embeds": [mawkEmbed], components: [mawkEmbedButtons] });
   }
 });
 
