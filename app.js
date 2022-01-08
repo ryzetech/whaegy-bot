@@ -1,9 +1,8 @@
 const { Client, Intents, MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const { token } = require('./token.json');
-// const { prefix } = require('./config.json');
+const { prefix } = require('./config.json');
 
 let counter = 0;
-let keksEmbed;
 const inviteWhitelist = ["https://discord.gg/9pFgurh"];
 
 const botcli = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_INVITES] });
@@ -33,6 +32,16 @@ const mawkEmbedButtons = new MessageActionRow()
       .setLabel("YouTube")
       .setEmoji("929031649067425853")
       .setURL("https://www.youtube.com/channel/UCNWst-KiCxNnpH3pdhPOINg"),
+    new MessageButton()
+      .setStyle("LINK")
+      .setLabel("Apple Music")
+      .setEmoji("929074667434688524")
+      .setURL("https://music.apple.com/de/artist/mawk/1487545"),
+    new MessageButton()
+      .setStyle("LINK")
+      .setLabel("Deezer")
+      .setEmoji("929074712330514532")
+      .setURL("https://www.deezer.com/de/artist/1254393"),
   );
 
 function checkInviteValidity() {
@@ -59,28 +68,33 @@ function checkInviteValidity() {
 
 botcli.once("ready", () => {
   console.log(`Logged in as ${botcli.user.tag}!`);
-  botcli.user.setActivity('with ryze and mawk', { type: 'PLAYING' });
+  botcli.user.setActivity('Mawk on Spotify', { type: 'LISTENING' });
   botcli.channels.cache.get("913155351912775731").send(`✅ I'm logged in and now watching!`);
 
   const userKeksi = botcli.users.cache.get("250353791193448448");
 
   const chatchannel = botcli.channels.cache.get("750404434953109619");
+  if (!chatchannel.type === "text") {
+    console.error("SHIT HAS GONE WRONG");
+    return;
+  }
 
   userKeksi.client.on("presenceUpdate", (oldPresence, newPresence) => {
     newPresence.activities.forEach((activity) => {
-      if (activity.name === "Spotify" && activity.type === "LISTENING" && activity.details === "Can You Feel My Heart") {
-        chatchannel.messages.fetch({ limit: 1 }).then((messages) => {
-          const lastMessage = messages.first();
-          if (lastMessage === keksEmbed) {
-            return;
-          }
-
-          const emb = new MessageEmbed()
+      if (activity.name === "Spotify" && activity.type === "LISTENING") {
+        let emb;
+        if (activity.details === "Can You Feel My Heart") {
+          emb = new MessageEmbed()
             .setImage("https://i.imgur.com/dTjXX9X.jpeg")
-            .setFooter('This image has been sent because Cookie is listening to "Can You Feel My Heart" on Spotify.', userKeksi.displayAvatarURL());
+            .setFooter(`This image has been sent because ${userKeksi.username} is listening to "Can You Feel My Heart" on Spotify.`, userKeksi.displayAvatarURL());
+        }
+        if (activity.details === "Nüsse Sind Gesund") {
+          emb = new MessageEmbed()
+            .setImage("https://www.daysoftheyear.com/wp-content/uploads/nut-day1.jpg")
+            .setFooter(`This image has been sent because ${userKeksi.username} is listening to "Nüsse Sind Gesund" on Spotify.`, userKeksi.displayAvatarURL());
+        }
 
-          keksEmbed = chatchannel.send({ embeds: [emb] });
-        });
+        if (emb) chatchannel.send({ embeds: [emb] });
       }
     });
   });
@@ -91,8 +105,12 @@ botcli.once("ready", () => {
 });
 
 botcli.on("messageCreate", message => {
+  let command = "";
   if (message.author === botcli.user) return;
-  if (message.content.startsWith("+mawk")) {
+  if (message.content.startsWith(prefix)) {
+    command = message.content.slice(1);
+  }
+  if (command.startsWith("mawk")) {
     counter = 0;
     message.channel.send({ embeds: [mawkEmbed], components: [mawkEmbedButtons] });
   }
