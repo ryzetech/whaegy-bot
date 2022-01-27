@@ -71,31 +71,29 @@ botcli.once("ready", () => {
   botcli.user.setActivity('Mawk on Spotify', { type: 'LISTENING' });
   botcli.channels.cache.get("913155351912775731").send(`✅ I'm logged in and now watching!`);
 
-  const userKeksi = botcli.users.cache.get("250353791193448448");
-
   const chatchannel = botcli.channels.cache.get("750404434953109619");
   if (!chatchannel.type === "text") {
     console.error("SHIT HAS GONE WRONG");
     return;
   }
 
-  userKeksi.client.on("presenceUpdate", (oldPresence, newPresence) => {
-    newPresence.activities.forEach((activity) => {
-      if (activity.name === "Spotify" && activity.type === "LISTENING") {
-        let emb;
-        if (activity.details === "Can You Feel My Heart") {
-          emb = new MessageEmbed()
-            .setImage("https://i.imgur.com/dTjXX9X.jpeg")
-            .setFooter(`This image has been sent because ${userKeksi.username} is listening to "Can You Feel My Heart" on Spotify.`, userKeksi.displayAvatarURL());
-        }
-        if (activity.details === "Nüsse Sind Gesund") {
-          emb = new MessageEmbed()
-            .setImage("https://www.daysoftheyear.com/wp-content/uploads/nut-day1.jpg")
-            .setFooter(`This image has been sent because ${userKeksi.username} is listening to "Nüsse Sind Gesund" on Spotify.`, userKeksi.displayAvatarURL());
-        }
+  botcli.guilds.cache.get("750404434953109616").members.cache.forEach((member) => {
+    member.client.on("presenceUpdate", (oldPresence, newPresence) => {
+      newPresence.activities.forEach((activity) => {
+        if (activity.name === "Spotify" && activity.type === "LISTENING") {
+          let emb;
 
-        if (emb) chatchannel.send({ embeds: [emb] });
-      }
+          if (activity.state.includes("Mawk")) {
+            emb = new MessageEmbed()
+              .setColor("#230633")
+              .setTitle("Song Activity")
+              .addField(activity.details, activity.state)
+              .setFooter(`${member.username} is listening to Mawk on Spotify. Thank you!`, member.displayAvatarURL());
+          }
+
+          if (emb) chatchannel.send({ embeds: [emb] });
+        }
+      });
     });
   });
 
