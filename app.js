@@ -44,6 +44,7 @@ const mawkEmbedButtons = new MessageActionRow()
       .setURL("https://www.deezer.com/de/artist/1254393"),
   );
 
+// eslint-disable-next-line no-unused-vars
 function checkInviteValidity() {
   // get all invites
   // if an invite is older than 1 hour and is used, delete it
@@ -77,25 +78,38 @@ botcli.once("ready", () => {
     return;
   }
 
+  /*
+  botcli.setMaxListeners(75);
+
   botcli.guilds.cache.get("750404434953109616").members.cache.forEach((member) => {
+    // eslint-disable-next-line no-unused-vars
     member.client.on("presenceUpdate", (oldPresence, newPresence) => {
-      newPresence.activities.forEach((activity) => {
-        if (activity.name === "Spotify" && activity.type === "LISTENING") {
-          let emb;
+      botcli.guilds.cache.get("750404434953109616").members.cache.forEach((meme) => {
+        if (meme.presence) {
+          // eslint-disable-next-line max-nested-callbacks
+          meme.presence.activities.forEach((activity) => {
+            if (activity.name === "Spotify" && activity.type === "LISTENING") {
+              let emb;
 
-          if (activity.state.includes("Mawk")) {
-            emb = new MessageEmbed()
-              .setColor("#230633")
-              .setTitle("Song Activity")
-              .addField(activity.details, activity.state)
-              .setFooter(`${member.username} is listening to Mawk on Spotify. Thank you!`, member.displayAvatarURL());
-          }
+              if (activity.state.includes("Mawk")) {
+                emb = new MessageEmbed()
+                  .setColor("#230633")
+                  .setTitle("Song Activity")
+                  .addField(activity.details, activity.state)
+                  .setFooter(`${meme.username} is listening to Mawk on Spotify. Thank you!`, meme.displayAvatarURL());
+              }
 
-          if (emb) chatchannel.send({ embeds: [emb] });
+              if (emb) {
+                chatchannel.send({ embeds: [emb] });
+                return;
+              }
+            }
+          });
         }
       });
     });
   });
+  */
 
   // checkInviteValidity();
 
